@@ -16,6 +16,7 @@ class MainContent extends React.Component {
                         <div className="btns">
                             <button className="btn btn-info" >Generate</button>
                             <button className="btn btn-info download-btn" >Download</button>
+                            <h6>Please, wait! This might take a few seconds</h6>
                         </div>
 
                     </form>
