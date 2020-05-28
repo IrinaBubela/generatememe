@@ -13,10 +13,20 @@ class MainContent extends React.Component {
                         <h6>Enter the text</h6>
                         <input onChange={this.props.getDataFromFirstInput} type="text" placeholder="Text 1" alt="..." />
                         <input onChange={this.props.getDataFromSecondInput} type="text" placeholder="Text 2" alt="..." />
+                        <h6 style={{
+                            color: this.props.inputError == 'Please enter some text to get generated mem' ? "red" : "green"
+                        }}>
+                            {this.props.inputError}
+                        </h6>
                         <div className="btns">
-                            <button className="btn btn-info" >Generate</button>
-                            <button className="btn btn-info download-btn" >Download</button>
-                            <h6>Please, wait! This might take a few seconds</h6>
+
+                            {this.props.isGenerated ? (<div><a
+                                href={this.props.src}
+                                download
+                                onClick={this.props.download}
+                            ><button className="btn btn-info download-btn" >Share</button></a>
+                                <button className="btn btn-info" style={{ width: "150px" }} onClick={this.props.reload} >Generate Again</button></div>) :
+                                <button className="btn btn-info" >Generate</button>}
                         </div>
 
                     </form>

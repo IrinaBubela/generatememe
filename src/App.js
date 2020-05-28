@@ -12,7 +12,9 @@ class App extends React.Component {
             memes: ["tenguy", "afraid", "aag", "wonka", "disastergirl", "drake", "fwp", "facepalm", "harold", "morpheus", "apcr", "bihw", "feelsgood", "crazypills", "joker"],
             url: 'https://memegen.link/tenguy/_.jpg',
             text1: '',
-            text2: ''
+            text2: '',
+            inputError: 'Please, wait! This can take a few seconds',
+            elIsGenerated: false
         }
     }
 
@@ -31,7 +33,7 @@ class App extends React.Component {
 
     displaySelectedImage = (e) => {
         this.setState({
-            url: e.target.src
+            url: e.target.src,
         })
     }
 
@@ -41,6 +43,7 @@ class App extends React.Component {
             text1: e.target.value
         })
     }
+
 
 
 
@@ -54,18 +57,58 @@ class App extends React.Component {
 
     generateMeme = async (e) => {
         e.preventDefault();
-        const modifiedUrl = this.state.url.replace('/_.jpg', "")
+        if (!e.target.children[1].value || !e.target.children[2]) {
+            this.setState({ inputError: 'Please enter some text to get generated mem' });
 
-        const res = await fetch(`${modifiedUrl}/${this.state.text1}/${this.state.text2}.jpg`);
-        try {
+        } else {
+
+            // e.target.children[1].value = "";
+            // e.target.children[2].value = ""
+            const modifiedUrl = this.state.url.replace('/_.jpg', "").replace('.jpg', "")
+
+            console.log(modifiedUrl);
+            const res = await fetch(`${modifiedUrl}/${this.state.text1}/${this.state.text2}.jpg`);
             console.log(res);
-            this.setState({
-                url: res.url
-            })
+
+            try {
+                this.setState({
+                    url: res.url,
+                    inputError: 'Please, wait! This can take a few seconds',
+                    text1: '',
+                    text2: '',
+                    elIsGenerated: true
+                })
+                console.log(this.state.url);
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    }
+
+
+    download = async (e) => {
+        const modifiedUrl = this.state.url.replace('.jpg', "")
+
+        console.log("donwload " + modifiedUrl);
+        const res = await fetch(`${modifiedUrl}/${this.state.text1}/${this.state.text2}.jpg?share=true`);
+        console.log(res);
+
+        try {
+            // this.setState({
+            //     url: res.url,
+            //     inputError: 'Please, wait! This can take a few seconds',
+            //     text1: '',
+            //     text2: '',
+            //     elIsGenerated: true
+            // })
+            console.log(this.state.url);
+
         } catch (err) {
             console.error(err);
         }
     }
+
 
     render() {
         const memesTemplates = this.displayMemesTemplates();
@@ -81,7 +124,11 @@ class App extends React.Component {
                         generateMeme={this.generateMeme}
                         getDataFromFirstInput={this.getDataFromFirstInput}
                         getDataFromSecondInput={this.getDataFromSecondInput}
-                        src={this.state.url} />
+                        inputError={this.state.inputError}
+                        src={this.state.url}
+                        isGenerated={this.state.elIsGenerated}
+                        download={this.download}
+                        reload={() => window.location.reload()} />
                 </div>
             </div >
         )
@@ -89,3 +136,15 @@ class App extends React.Component {
 }
 
 export default App;
+
+
+// <div className="App">
+// <a
+//     href="https://timesofindia.indiatimes.com/thumb/msid-70238371,imgsize-89579,width-400,resizemode-4/70238371.jpg"
+//     download
+//     onClick={() => this.download()}
+// >
+//     <i className="fa fa-download" />
+// download
+// </a>
+// </div>
