@@ -11,7 +11,7 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1"
   },
-  "homepage": "https://imię.github.io/nazwa",
+  "homepage": "https://irinabubela.github.io/generatememe/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
