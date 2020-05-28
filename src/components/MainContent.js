@@ -20,12 +20,8 @@ class MainContent extends React.Component {
                         </h6>
                         <div className="btns">
 
-                            {this.props.isGenerated ? (<div><a
-                                href={this.props.src}
-                                download
-                                onClick={this.props.download}
-                            ><button className="btn btn-info download-btn" >Share</button></a>
-                                <button className="btn btn-info" style={{ width: "150px" }} onClick={this.props.reload} >Generate Again</button></div>) :
+                            {this.props.isGenerated ? (
+                                <button className="btn btn-info" style={{ width: "150px" }} onClick={this.props.reload} >Generate Again</button>) :
                                 <button className="btn btn-info" >Generate</button>}
                         </div>
 

@@ -61,9 +61,6 @@ class App extends React.Component {
             this.setState({ inputError: 'Please enter some text to get generated mem' });
 
         } else {
-
-            // e.target.children[1].value = "";
-            // e.target.children[2].value = ""
             const modifiedUrl = this.state.url.replace('/_.jpg', "").replace('.jpg', "")
 
             console.log(modifiedUrl);
@@ -87,28 +84,6 @@ class App extends React.Component {
     }
 
 
-    download = async (e) => {
-        const modifiedUrl = this.state.url.replace('.jpg', "")
-
-        console.log("donwload " + modifiedUrl);
-        const res = await fetch(`${modifiedUrl}/${this.state.text1}/${this.state.text2}.jpg?share=true`);
-        console.log(res);
-
-        try {
-            // this.setState({
-            //     url: res.url,
-            //     inputError: 'Please, wait! This can take a few seconds',
-            //     text1: '',
-            //     text2: '',
-            //     elIsGenerated: true
-            // })
-            console.log(this.state.url);
-
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
 
     render() {
         const memesTemplates = this.displayMemesTemplates();
@@ -127,7 +102,6 @@ class App extends React.Component {
                         inputError={this.state.inputError}
                         src={this.state.url}
                         isGenerated={this.state.elIsGenerated}
-                        download={this.download}
                         reload={() => window.location.reload()} />
                 </div>
             </div >
@@ -137,14 +111,3 @@ class App extends React.Component {
 
 export default App;
 
-
-// <div className="App">
-// <a
-//     href="https://timesofindia.indiatimes.com/thumb/msid-70238371,imgsize-89579,width-400,resizemode-4/70238371.jpg"
-//     download
-//     onClick={() => this.download()}
-// >
-//     <i className="fa fa-download" />
-// download
-// </a>
-// </div>
