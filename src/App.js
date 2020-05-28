@@ -12,7 +12,9 @@ class App extends React.Component {
             memes: ["tenguy", "afraid", "aag", "wonka", "disastergirl", "drake", "fwp", "facepalm", "harold", "morpheus", "apcr", "bihw", "feelsgood", "crazypills", "joker"],
             url: 'https://memegen.link/tenguy/_.jpg',
             text1: '',
-            text2: ''
+            text2: '',
+            inputError: 'Please, wait! This can take a few seconds',
+            elIsGenerated: false
         }
     }
 
@@ -31,7 +33,7 @@ class App extends React.Component {
 
     displaySelectedImage = (e) => {
         this.setState({
-            url: e.target.src
+            url: e.target.src,
         })
     }
 
@@ -41,6 +43,7 @@ class App extends React.Component {
             text1: e.target.value
         })
     }
+
 
 
 
@@ -54,18 +57,33 @@ class App extends React.Component {
 
     generateMeme = async (e) => {
         e.preventDefault();
-        const modifiedUrl = this.state.url.replace('/_.jpg', "")
+        if (!e.target.children[1].value || !e.target.children[2]) {
+            this.setState({ inputError: 'Please enter some text to get generated mem' });
 
-        const res = await fetch(`${modifiedUrl}/${this.state.text1}/${this.state.text2}.jpg`);
-        try {
+        } else {
+            const modifiedUrl = this.state.url.replace('/_.jpg', "").replace('.jpg', "")
+
+            console.log(modifiedUrl);
+            const res = await fetch(`${modifiedUrl}/${this.state.text1}/${this.state.text2}.jpg`);
             console.log(res);
-            this.setState({
-                url: res.url
-            })
-        } catch (err) {
-            console.error(err);
+
+            try {
+                this.setState({
+                    url: res.url,
+                    inputError: 'Please, wait! This can take a few seconds',
+                    text1: '',
+                    text2: '',
+                    elIsGenerated: true
+                })
+                console.log(this.state.url);
+
+            } catch (err) {
+                console.error(err);
+            }
         }
     }
+
+
 
     render() {
         const memesTemplates = this.displayMemesTemplates();
@@ -81,7 +99,10 @@ class App extends React.Component {
                         generateMeme={this.generateMeme}
                         getDataFromFirstInput={this.getDataFromFirstInput}
                         getDataFromSecondInput={this.getDataFromSecondInput}
-                        src={this.state.url} />
+                        inputError={this.state.inputError}
+                        src={this.state.url}
+                        isGenerated={this.state.elIsGenerated}
+                        reload={() => window.location.reload()} />
                 </div>
             </div >
         )
@@ -89,3 +110,4 @@ class App extends React.Component {
 }
 
 export default App;
+
